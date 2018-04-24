@@ -1,5 +1,10 @@
 # Cli-upload
 
+
+## Requirements
+
+Requires python3 and pip3 installed on the system.
+
 ## Installation
 
 ```sh
