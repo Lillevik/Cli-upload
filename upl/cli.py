@@ -25,17 +25,20 @@ def main():
     if '<file>' in options:
         import os, requests
         cwd = os.getcwd()
-        in_file = open(os.path.join(cwd, options['<file>']), 'rb')
-        print('Uploading ' + options['<file>'])
-        try:
-            r = requests.post('https://i.lillevik.pw/upload/file', files={'file': in_file})
-            if r.status_code == 200:
-                print('Done! url: ' + r.json()['location'])
-            elif r.status_code == 413:
-                print('Ups, file too large! Max 20mb.')
-            else:
-                print('An error occurred during upload.')
-        except Exception as e:
-            raise e
-            print('An unexpected error occurred.')
+        filepath = os.path.join(cwd, options['<file>'])
+        if os.path.isfile(filepath):
+            in_file = open(filepath, 'rb')
+            print('Uploading ' + options['<file>'])
+            try:
+                r = requests.post('https://i.lillevik.pw/upload/file', files={'file': in_file})
+                if r.status_code == 200:
+                    print('Done! url: ' + r.json()['location'])
+                elif r.status_code == 413:
+                    print('Error: file too large. Max 100mb.')
+                else:
+                    print('Error: An error occurred during upload.')
+            except Exception:
+                print('Error: An unexpected error occurred.')
+        else:
+            print('Error: Could not find the file.')
 
