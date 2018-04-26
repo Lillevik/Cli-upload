@@ -2,7 +2,7 @@
 upl
 
 Usage:
-  upl <file>
+  upl <file> [-c | --copy]
   upl -h | --help
   upl --version
 
@@ -11,13 +11,13 @@ Options:
   --version                         Show version.
 
 Examples:
-  upl <file>
+  upl file.txt
 """
 
 
 from docopt import docopt
 from upl import __version__ as VERSION
-import os, requests
+import os, requests, clipboard
 
 
 def main():
@@ -31,7 +31,11 @@ def main():
             print('Uploading ' + options['<file>'])
             r = requests.post('https://i.lillevik.pw/upload/file', files={'file': in_file})
             if r.status_code == 200:
-                print('Done! url: ' + r.json()['location'])
+                url = r.json()['location']
+                print('Done! url: ' + url)
+                if '-c' in options or '--copy' in options:
+                    clipboard.copy(url)
+                    print('Copied url to clipboard.')
             elif r.status_code == 413:
                 print('Error: file too large. Max 100mb.')
             else:

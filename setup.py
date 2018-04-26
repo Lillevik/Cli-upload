@@ -9,7 +9,7 @@ setup(
     author='Marius Lillevik',
     license='GNU',
     keywords='cli',
-    install_requires=['docopt', 'requests'],
+    install_requires=['docopt', 'requests', 'clipboard'],
     packages=find_packages(),
     zip_safe=False,
     entry_points={
